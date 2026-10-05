@@ -1,1 +1,6 @@
+# Real secrets never get committed, whatever they are named.
 .env
+.env.*
+!.env.example
+*.env
+!*.env.example

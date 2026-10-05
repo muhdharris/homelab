@@ -50,8 +50,18 @@ and `chmod 600`.
 
 They were originally not published, and that was the right call at the time — they held
 credentials in plaintext `environment:` blocks. The fix was to externalise those into
-`.env` rather than to keep hiding the files. Copy `.env.example` to `.env`, fill it in,
-and the stack comes up as it does here.
+`.env` rather than to keep hiding the files.
+
+There is one example file per service — `immich.env.example`, `firefly.env.example`,
+`pihole.env.example` — because each service has its own credentials. A single shared
+example would resolve to whichever service was listed last, so Immich would silently
+start with Firefly's database user. Copy the one matching your compose file:
+
+```bash
+cd compose
+cp immich.env.example .env    # then fill it in
+docker compose up -d
+```
 
 `architecture.md` describes the shape of the stack.
 
