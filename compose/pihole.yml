@@ -1,0 +1,21 @@
+# Sanitised from the live file. No host addresses, no credentials.
+# Copy .env.example to .env and fill it in; .env is gitignored and chmod 600.
+
+services:
+  pihole:
+    container_name: pihole
+    image: pihole/pihole:latest
+    ports:
+      - "53:53/tcp"
+      - "53:53/udp"
+      - "8081:80/tcp"   # web UI — using 8081 to avoid clashing with other services
+    environment:
+      TZ: ${TZ}
+      WEBPASSWORD: ${PIHOLE_WEBPASSWORD}
+      FTLCONF_dns_listeningMode: 'ALL'
+    volumes:
+      - './etc-pihole:/etc/pihole'
+      - './etc-dnsmasq.d:/etc/dnsmasq.d'
+    restart: unless-stopped
+    cap_add:
+      - NET_ADMIN

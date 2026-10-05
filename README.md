@@ -42,14 +42,18 @@ The same symptom, a completely different cause — a driver ordering problem dur
 handoff. Fixed by forcing `vfio-pci` to load before `i915`, then superseded by not doing
 GPU passthrough at all and using the host iGPU for VAAPI transcoding instead.
 
-## Why no compose files
+## Compose files
 
-They exist and they work, but they are the least interesting thing here and the most
-likely to contain something that should not be published — real credentials in plaintext
-`environment:` blocks, a tailnet address, a real hostname. Sanitised versions would be
-mostly boilerplate with placeholders where the values should be.
+`compose/` holds sanitised versions of the running files: no host addresses, no
+credentials, no tailnet names. Every secret comes from a `.env` file which is gitignored
+and `chmod 600`.
 
-If you want the shape of the stack, `architecture.md` describes it.
+They were originally not published, and that was the right call at the time — they held
+credentials in plaintext `environment:` blocks. The fix was to externalise those into
+`.env` rather than to keep hiding the files. Copy `.env.example` to `.env`, fill it in,
+and the stack comes up as it does here.
+
+`architecture.md` describes the shape of the stack.
 
 ## What I would do differently
 
