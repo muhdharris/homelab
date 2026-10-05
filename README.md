@@ -55,13 +55,21 @@ credentials in plaintext `environment:` blocks. The fix was to externalise those
 There is one example file per service — `immich.env.example`, `firefly.env.example`,
 `pihole.env.example` — because each service has its own credentials. A single shared
 example would resolve to whichever service was listed last, so Immich would silently
-start with Firefly's database user. Copy the one matching your compose file:
+start with Firefly's database user. A single real `.env` has the same problem in
+reverse: setting up the next service overwrites it.
+
+The compose files are named after their service (`immich.yml`, `firefly.yml`,
+`pihole.yml`), which Compose does not auto-detect, so both the compose file and the env
+file have to be named explicitly:
 
 ```bash
 cd compose
-cp immich.env.example .env    # then fill it in
-docker compose up -d
+cp immich.env.example immich.env   # then fill it in
+docker compose --env-file immich.env -f immich.yml up -d
 ```
+
+Repeat per service, substituting the name. The env files are already covered by
+`.gitignore` here.
 
 `architecture.md` describes the shape of the stack.
 
