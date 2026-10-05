@@ -52,24 +52,28 @@ They were originally not published, and that was the right call at the time — 
 credentials in plaintext `environment:` blocks. The fix was to externalise those into
 `.env` rather than to keep hiding the files.
 
-There is one example file per service — `immich.env.example`, `firefly.env.example`,
-`pihole.env.example` — because each service has its own credentials. A single shared
-example would resolve to whichever service was listed last, so Immich would silently
-start with Firefly's database user. A single real `.env` has the same problem in
-reverse: setting up the next service overwrites it.
+Each service lives in its own directory with its own `docker-compose.yml` and
+`.env.example`:
 
-The compose files are named after their service (`immich.yml`, `firefly.yml`,
-`pihole.yml`), which Compose does not auto-detect, so both the compose file and the env
-file have to be named explicitly:
-
-```bash
-cd compose
-cp immich.env.example immich.env   # then fill it in
-docker compose --env-file immich.env -f immich.yml up -d
+```
+compose/
+  immich/    docker-compose.yml  .env.example
+  firefly/   docker-compose.yml  .env.example
+  pihole/    docker-compose.yml  .env.example
 ```
 
-Repeat per service, substituting the name. The env files are already covered by
-`.gitignore` here.
+The naming is deliberate. The compose file is called `docker-compose.yml` so Compose
+finds it without an explicit `-f`, and each service keeps its own `.env` rather than
+sharing one — a shared `.env` gets overwritten when you set up the next service, and
+the variables collide with the wrong values. To bring one up:
+
+```bash
+cd compose/immich
+cp .env.example .env      # then fill it in
+docker compose up -d
+```
+
+The `.env` files are already covered by the `.gitignore` in this directory.
 
 `architecture.md` describes the shape of the stack.
 
