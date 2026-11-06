@@ -16,7 +16,7 @@ Two physical machines, virtualised with Proxmox, running a Docker host and a NAS
          │  pve                │              │  pve2                 │
          │  OptiPlex 5090      │              │  old laptop           │
          │  i5-11500 6c/12t    │              │  Ryzen 7, 8GB         │
-         │  I219-LM 1Gbps      │              │  10Gbps                │
+         │  I219-LM 1Gbps      │              │                       │
          │  Intel UHD 750      │              └─────────────┬─────────┘
          └───┬────────┬────┬───┘                            │
              │        │    │                                │
@@ -45,7 +45,7 @@ Two physical machines, virtualised with Proxmox, running a Docker host and a NAS
 | Host | Machine | Specs | Role |
 |---|---|---|---|
 | `pve` | Dell OptiPlex 5090 | i5-11500 (Tiger Lake, 6c/12t), 256GB SSD + 1TB HDD, I219-LM 1Gbps, UHD 750 | Primary node — runs all the VMs |
-| `pve2` | Retired laptop | Ryzen 7 3000 series, 8GB, 512GB SSD, 10Gbps | Second node, HA-capable |
+| `pve2` | Retired laptop | Ryzen 7 3000 series, 8GB, 512GB SSD | Second node, HA-capable |
 
 One host does all the work. The second exists so the cluster can survive a failure of
 either node — which, given the hardware faults documented in
